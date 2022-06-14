@@ -7,7 +7,7 @@
 
 
 
-### 2. Project 진행도
+### 2. About Project
 
 - **Navbar**
 
@@ -64,3 +64,49 @@
      ```
 
      - to : path가 / 인 태그와의 연동
+  
+- **useNavigate**
+
+  - 페이지 이동을 도와주는 함수
+  - 보통은 `let navigate = useNavigate()` 와 같은 방식으로 변수에 담아서 사용
+  - `onClick={()=>{ navigate('경로')} }` 방식으로 사용.
+  - `navigate(1)`  → 앞으로 한 페이지(앞으로 가기), `navigate(-1)` → 뒤로 한 페이지(뒤로 가기)
+  
+- **404 페이지**
+
+  - `<Route path='*' element={<div>없는 페이지</div>} />`
+
+- **Nested Routes**
+
+  - 예시로 /about이 회사의 정보, /about/member이 회사의 직원 정보라면
+
+    ```html
+    <Route path='/About' element={<About/>}>
+    <Route path='member' element={ <div> 직원 </div> }></Route>
+      <Route path='location' element={<About/>}></Route>
+    </Route>
+    ```
+  
+    위와 같은 방식으로 Route 태그로 감싸준 후 path경로에 **/ 를 생략**하여 작성
+  
+  - 둘러싸인 태그와 함께 모든 elements들이 보임 (위 같은 경우는 About컴포넌츠와 직원 이라는 글자가 동시에 보이게 됨. )
+
+  - 최상위 `<Route/>` 태그의 element 요소 component에 가서 `<Outlet>` 태그를 사용하여 하위 태그의 위치를 지정 해줄 수 있음
+
+    ```jsx
+    // About.js
+    import { Outlet } from 'react-router-dom'
+    
+    function About() {
+    	return(
+    		<>
+    			<h4>회사 정보</h4>
+    			<Outlet></Outlet>
+    		</>
+    	)
+    }
+    
+    export default About
+    ```
+  
+  - 여러 유사한 페이지가 필요 할 때 사용하면 좋다.

@@ -1,15 +1,16 @@
 import { Container, Nav, Navbar } from 'react-bootstrap/';
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 
 function MyNavBar() {
+  let navigate = useNavigate()
   return (
     <Navbar bg="dark" variant="dark">
       <Container className='nav justify-content-start'>
         <Navbar.Brand href="#home">Shop</Navbar.Brand>
         <Nav className="me-auto">
-          <Link to="/" style={{ textDecoration: "none" }}><Nav.Link href="#home">Home</Nav.Link></Link>
-          <Nav.Link href="#features">Cart</Nav.Link>
+          <Nav.Link onClick={()=>{ navigate('/') }}>Home</Nav.Link>
+          <Nav.Link onClick={()=>{ navigate('/detail') }} >Cart</Nav.Link>
         </Nav>
       </Container>
     </Navbar>
