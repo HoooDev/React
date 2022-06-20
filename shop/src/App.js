@@ -9,13 +9,20 @@ import data from './data'
 import { useState } from 'react';
 function App() {
   
-  let [shoes] = useState(data)
+  let [shoes, setShoes] = useState(data)
   return (
     <div className="App">
 
       <MyNavBar></MyNavBar>
       <div className='main-bg'></div>
+      <button onClick={ ()=> {
+        console.log(shoes)
+        let newShoes = [...shoes]
+        newShoes = newShoes.sort((a, b) => a.title.toLowerCase()<b.title.toLowerCase() ? -1 : 1)
+        console.log(newShoes)
+        setShoes(newShoes)
 
+      } }>정렬</button>
       <Routes>
         <Route path='/' element={
           <>
