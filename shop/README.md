@@ -4,6 +4,7 @@
 
 - React를 배우기 위한 2번째 step.
 - React-Bootstrap을 활용하여 유용하고 간단한 UI로 진행.
+- Redux Toolkit을 사용하여 store를 통한 state 관리
 
 
 
@@ -64,14 +65,14 @@
      ```
 
      - to : path가 / 인 태그와의 연동
-  
+
 - **useNavigate**
 
   - 페이지 이동을 도와주는 함수
   - 보통은 `let navigate = useNavigate()` 와 같은 방식으로 변수에 담아서 사용
   - `onClick={()=>{ navigate('경로')} }` 방식으로 사용.
   - `navigate(1)`  → 앞으로 한 페이지(앞으로 가기), `navigate(-1)` → 뒤로 한 페이지(뒤로 가기)
-  
+
 - **404 페이지**
 
   - `<Route path='*' element={<div>없는 페이지</div>} />`
@@ -86,9 +87,9 @@
       <Route path='location' element={<About/>}></Route>
     </Route>
     ```
-  
+
     위와 같은 방식으로 Route 태그로 감싸준 후 path경로에 **/ 를 생략**하여 작성
-  
+
   - 둘러싸인 태그와 함께 모든 elements들이 보임 (위 같은 경우는 About컴포넌츠와 직원 이라는 글자가 동시에 보이게 됨. )
 
   - 최상위 `<Route/>` 태그의 element 요소 component에 가서 `<Outlet>` 태그를 사용하여 하위 태그의 위치를 지정 해줄 수 있음
@@ -108,18 +109,18 @@
     
     export default About
     ```
-  
+
   - 여러 유사한 페이지가 필요 할 때 사용하면 좋다.
-  
+
 - **find 함수**
 
   - find 함수란?
 
     - 배열의 요소를 순차적으로 순회하면서 조건에 일치하는 요소의 값을 즉시 반환.
     - 조건에 일치하지 않는다면, undefined를 반환한다.
-  
+
   - 보유한 데이터의 순서가 바뀌더라도 지정된 id 값의 Router를 비추고 싶을 때.
-  
+
     ```json
       let data = [
         {
@@ -131,24 +132,24 @@
         ...생략
         ]  
     ```
-  
+
     데이터의 모양이 이렇다면 
-  
+
     ```js
     let targetItem = props.shoes.find((shoe) => id === String(shoe.id) )
     ```
-  
+
     지정된 id 값을 변수에 find 함수로 찾아서 저장을 한다.
-  
+
 - **css파일 종속시키기**
 
   - ```js
     |   App.js
     |   App.module.css
     ```
-  
+
     위와 같이 작성하게 된다면 css파일은 App.js에 종족되게 된다.
-  
+
 - **styled-components**
 
   - `npm install styled-components`
@@ -205,17 +206,17 @@
   - styled 복사
 
     `let newBtn = styled.button(복사 할 component)`
-  
-- Component의 LifeCycle(useEffect)
+
+- **Component의 LifeCycle(useEffect)**
 
   - LifeCycle
 
     - mount : 페이지에 장착
     - update : 업데이트
     - unmount : 제거
-  
+
   - 사용 이유
-  
+
     - 간섭이 가능하다 (중간중간 코드 실행)
     - useEffect 안에 있는 코드는 html 렌더링 후에 동작
       - 복잡한 연산의 경우 useEffect안에 코드를 넣게 된다면 화면을 먼저 띄운 후 연산이 실행되므로 좀 더 빠른 효율
@@ -240,6 +241,65 @@
       - `useEffect(()=>{})` -> 재렌더링마다 코드 실행하고 싶으면
       - `useEffect(()=>{}, [])` -> mount시 1회 코드 실행하고 싶으면
       - `useEffect(()=>{ return{} }, [ 실행조건 ])` -> unmount시 1회 코드 실행하고 싶으면
-  
-  -  
-  
+
+- **AJAX를 통한 서버와의 통신**
+
+  - GET -> 데이터를 서버로부터 가져온다.
+
+  - POST -> 데이터를 서버로 보낸다.
+
+  - form태그를 사용하여  get, post로 요청을 날린다면 **브라우저가 새로고침** 된다.
+
+  - 이런 부분을 해소하고자 **AJAX** 사용!
+
+    - 서버에 GET, POST 요청을 할 때 새로고침 없이 데이터를 주고 받을 수 있게 도와주는 간단한 브라우저 기능
+    - 방법
+      - XMLHttpRequest (옛날 문법)
+      - fetch() (최신 문법)
+      - **axios** (외부 라이브러리) <-- 이번 프로젝트에선 이 방법 채택
+
+  - axios 사용법
+
+    - `npm install axios`
+
+    - ```js
+          <button onClick={()=>{
+            axios.get('https://codingapple1.github.io/shop/data2.json').then((결과)=>{
+              console.log(결과.data)
+            })
+            .catch(()=>{
+              console.log('실패함')
+            })
+          }}>버튼</button>
+      ```
+
+    - get을 사용하여 URL로 요청을 보내고 .then 안의 '결과' 에 요청이 담기게 되고 '결과.data' 에 우리가 가져오고자 하는 데이터가 가져와짐
+
+    - 만약 요청을 보냈는데 data를 가져오는데 실패하게 된다면 .catch() 안의 코드가 실행된다.
+
+    - axios로 추가 데이터 불러와서 렌더링하기
+
+      ```js
+      axios.get('https://codingapple1.github.io/shop/data2.json')
+      	.then((data) => {
+      	let copyItem = [...shoes]
+      	data.data.map((newItem) => copyItem.push(newItem))
+      	setShoes(copyItem)
+      	})
+      ```
+
+      새로운 복사본을 만들어 shoes에 map을 통한 순회로 데이터를 집어 넣어줌.
+
+      ```js
+      axios.get('https://codingapple1.github.io/shop/data2.json')
+      	.then((data) => {
+      	let copyItem = [...shoes, ...data.data]
+      	setShoes(copyItem)
+      	})
+      ```
+
+      다른 방법.
+
+      더 효율적인 방법인데 구조분해할당(...) 이 생각나지 않아 좀 더 어렵게 접근했었다.
+
+      
