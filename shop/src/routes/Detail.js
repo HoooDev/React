@@ -1,31 +1,41 @@
+import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import styled from "styled-components"
 
 function Detail(props) {
 
-  let YellowBtn = styled.button`
-    background : yellow;
-    color : black;
-    padding : 10px;
-  `
+  let [onOff, setOnOff] = useState(false)
+  useEffect(()=>{
+    setTimeout(()=> { setOnOff(false) }, 2000 )
+  }, [])
 
-  let Box = styled.div`
-    background : gray;
-    padding : 20px
-  `
+  let [inputValue, setInputValue] = useState('')
+  useEffect(()=>{
+    if(isNaN(inputValue) === true){
+      alert('ㄴㄴ')
+    }
+  }, [inputValue])
 
+  let [count, setCount] = useState(0)
   let { id } = useParams()
   let targetItem = props.shoes.find((shoe) => id === String(shoe.id))
-
   return (
     <>
-      <div className="container">
+      { onOff === true ? 
+      <div className="alert alert-warning">
+        2초 이내 구매시 할인
+      </div> : null }
+      <button onClick={()=> {
+        setCount(count+1 )
+      }}>클릭!</button> <p>{count}</p>
 
+      <div className="container">
         <div className="row">
           <div className="col-md-6">
             <img src={'https://codingapple1.github.io/shop/shoes' + (Number(targetItem.id) + Number(1)) + '.jpg'} alt="123" width="100%" />
           </div>
+
           <div className="col-md-6">
+          <input onChange={(e)=>{setInputValue(e.target.value)}}></input>
             <h4 className="pt-5">{targetItem.title}</h4>
             <p>{targetItem.content}</p>
             <p>{targetItem.price}</p>

@@ -205,4 +205,41 @@
   - styled 복사
 
     `let newBtn = styled.button(복사 할 component)`
+  
+- Component의 LifeCycle(useEffect)
 
+  - LifeCycle
+
+    - mount : 페이지에 장착
+    - update : 업데이트
+    - unmount : 제거
+  
+  - 사용 이유
+  
+    - 간섭이 가능하다 (중간중간 코드 실행)
+    - useEffect 안에 있는 코드는 html 렌더링 후에 동작
+      - 복잡한 연산의 경우 useEffect안에 코드를 넣게 된다면 화면을 먼저 띄운 후 연산이 실행되므로 좀 더 빠른 효율
+
+  - 사용 방법
+
+    - mount, update : `useEffect(()=>{ 페이지 장착 시 실행 될 코드 }, [ 실행조건 ])` 
+
+      - useEffect 동작 전에 실행되는 `return() => {}`
+
+        ```js
+        // clean up function
+        useEffect(()=>{ 페이지 장착 시 실행 될 코드 
+                      	return() => {
+                          [코드~~]
+                        }
+                      }, [])
+        ```
+
+    - 간단 정리
+
+      - `useEffect(()=>{})` -> 재렌더링마다 코드 실행하고 싶으면
+      - `useEffect(()=>{}, [])` -> mount시 1회 코드 실행하고 싶으면
+      - `useEffect(()=>{ return{} }, [ 실행조건 ])` -> unmount시 1회 코드 실행하고 싶으면
+  
+  -  
+  
