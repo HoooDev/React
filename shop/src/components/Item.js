@@ -7,7 +7,6 @@ function Item(props) {
   let navigate = useNavigate()
   return (
     <Row>
-      {console.log(props)}
       {props.shoes.map((shoe, idx) => {
         let imgUrl = "https://codingapple1.github.io/shop/shoes" + (shoe.id + 1) + ".jpg"
         let goDetail = '/detail/' + shoe.id

@@ -2,7 +2,10 @@ import { useEffect, useState } from "react"
 import { Nav } from "react-bootstrap"
 import { useParams } from "react-router-dom"
 import TabContent from "../components/TabContent"
+
+ 
 function Detail(props) {
+
 
   let [onOff, setOnOff] = useState(false)
   useEffect(()=>{
@@ -70,7 +73,7 @@ function Detail(props) {
           </Nav.Item>
         </Nav>
 
-         <TabContent tab={tab}/>
+         <TabContent tab={tab} shoes={props.shoes}/>
       </div>
     </>
   )

@@ -392,4 +392,84 @@
   export default Detail
   ```
 
-  
+- **Redux**
+
+  - `npm install @reduxjs/toolkit react-redux` 를 사용해 설치 (React 18.1.0 이상 버전에서 사용)
+
+  - src 폴더 안에 store.js 파일 생성 후 코드 작성
+
+    ```js
+    // store.js
+    import { configureStore } from '@reduxjs/toolkit'
+    
+    export default configureStore({
+      reducer: { }
+    }) 
+    ```
+
+  - index.js 에서 사용 선언 해주기
+
+    ```js
+    ...중략
+    import { Provider } from 'react-redux';
+    import store from './store.js' // store.js import 하기
+    
+    
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(
+      <React.StrictMode>
+        <Provider store={store}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </Provider>  
+      </React.StrictMode>
+    );
+    ...중략
+    ```
+
+    1. `<Provider></Provider>`태그로 `<App/>` 태그를 감싸준다.
+    2. store.js 를 import 후  `<Provider store={store}>` 를 통해 가져오기
+
+  - store.js 에서 state만드는 방법
+
+    ```js
+    import { configureStore, createSlice,  } from '@reduxjs/toolkit'
+    
+    //useState와 비슷한 원리
+    let user = createSlice({
+    	name : 'user', // state 이름
+    	initialState : 'lee' // 값
+    })
+    
+    
+    export default configureStore({
+      reducer: {
+    		user : user.reducer // 위 변수를 정해진 규격에 맞게 넣어줌. 
+    	}
+    })
+    ```
+
+  - 다른 component에서 사용하기
+
+    - 만약 Cart.js에서 사용한다면
+
+      ```js
+      import {Table} from 'react-bootstrap'
+      import { useSelector } from 'react-redux'
+      
+      function Cart() {
+      
+      	let a = useSelector((state)=> { return state }) // Redux store를 가져와 줌, 모든 state가 이 곳에 남아있다.
+      
+      	return(
+      		<div>
+      			...중략
+      		</div>
+      	)
+      }
+      
+      export default Cart
+      ```
+
+      위와 같이 작성하면 모든 state들이 변수 a에 저장되게 되는데 만약 user라는 state만 가져오고 싶다면 `let a = useSelector((state)=> { return state.user })`와 같이 조작 해 주면 된다.

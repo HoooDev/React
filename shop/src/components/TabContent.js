@@ -1,5 +1,5 @@
 
-function TabContent (props) {
+function TabContent ({tab, shoes}) {
 		// if (props.tab === 0){
 		// 	return <div>내용1</div>
 		// } else if(props.tab === 1){
@@ -8,7 +8,7 @@ function TabContent (props) {
 		// 	return <div>내용3</div>
 		// }
 		return (
-		[<div>내용0</div>, <div>내용1</div>, <div>내용2</div>][props.tab]
+		[<div>{shoes[0].title}</div>, <div>내용1</div>, <div>내용2</div>][tab]
 		)
 }
 
