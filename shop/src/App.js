@@ -12,33 +12,48 @@ import axios from 'axios';
 function App() {
 
   let [shoes, setShoes] = useState(data)
+  let [clickCnt, setClickCnt] = useState(1)
   return (
     <div className="App">
 
       <MyNavBar></MyNavBar>
       <div className='main-bg'></div>
-      <button onClick={() => {
+      {/* <button onClick={() => {
         console.log(shoes)
         let newShoes = [...shoes]
         newShoes = newShoes.sort((a, b) => a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 1)
         setShoes(newShoes)
 
-      }}>정렬</button>
+      }}>정렬</button> */}
       <Routes>
         <Route path='/' element={
           <>
             <Container>
               <Item shoes={shoes} ></Item>
             </Container>
-            <button onClick={() => {
-              axios.get('https://codingapple1.github.io/shop/data2.json')
+            { clickCnt < 3 ?
+              <button onClick={() => {
+                let newCnt = clickCnt
+                newCnt += 1
+                setClickCnt(newCnt)
+                console.log(clickCnt)
+                if (clickCnt === 1){
+                axios.get('https://codingapple1.github.io/shop/data2.json')
+                  .then((data) => {
+                    let copyItem = [...shoes, ...data.data]
+                    setShoes(copyItem)
+                  })
+                console.log(shoes)
+              } else if (clickCnt === 2) {
+                axios.get('https://codingapple1.github.io/shop/data3.json')
                 .then((data) => {
                   let copyItem = [...shoes, ...data.data]
                   setShoes(copyItem)
                 })
-              console.log(shoes)
-
-            }}>더보기</button>
+              }
+            }}
+              >더보기</button>
+            : null}
           </>
         } />
         <Route path='/detail/:id' element={<Detail shoes={shoes} />} />

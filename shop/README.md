@@ -302,4 +302,94 @@
 
       더 효율적인 방법인데 구조분해할당(...) 이 생각나지 않아 좀 더 어렵게 접근했었다.
 
+    - POST 요청 하는 법
+
+      - `axios.post('URL', {name : 'kim'})` 와 같은 코드로 전송.
+      - 뒤에 .then() 을 붙인다면 완료시 특정 코드 실행 가능
       
+    - 동시에 AJAX요청 여러개 날리는 법
+
+      - `Promise.all( [axios.get('URL1'), axios.get('URL2')] )` 
+      - 마찬가지로 뒤에 .then() 을 붙인다면 완료시 특정 코드 실행 가능
+
+    - fetch() 사용법
+
+      - `fetch('URL').then(결과 => 결과.json()).then((결과) => { console.log(결과) } )`
+      - fetch는 자동으로 JSON -> object/array 로 변경해주지 않으므로 직접 바꾸는 작업이 필요.
+
+- **탭 UI 만들기**
+
+  - TabContent.js Component를 새로 만들고 코드 작성 (html 안에서 기존 if 문법을 사용 불가하므로 Component화 시켜서 사용)
+
+  ```js
+  // TabContent.js
+  function TabContent (props) {
+  		if (props.tab === 0){
+  			return <div>내용1</div>
+  		} else if(props.tab === 1){
+  			return <div>내용2</div>
+  		} else {
+  			return <div>내용3</div>
+  		}
+  }
+  
+  export default TabContent
+  ```
+
+  
+
+  - 다른 방법 (list의 index의 조작으로도 충분히 사용 가능)
+
+  ```js
+  return (
+    [<div>내용0</div>, <div>내용1</div>, <div>내용2</div>][props.tab]
+    )
+  ```
+
+  
+
+  - Detail.js에 컴포넌트를 붙인 후 State 조작해줌 (각 tab에 onClick 함수를 사용하여 tab의 번호를 저장해 줄 state를 조작해준다.)
+
+  ```js
+  ...중략
+  import TabContent from "../components/TabContent"
+  	
+    ...중략
+    let [tab, setTab] = useState(0)
+  
+    return (
+      		... 중략
+          <Nav variant="tabs" defaultActiveKey="link-0">
+            <Nav.Item>
+              <Nav.Link eventKey="link-0" onClick={()=>{
+                let nowTab = tab
+                nowTab = 0
+                setTab(nowTab)
+              }}>Option 1</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="link-1" onClick={()=>{
+                let nowTab = tab
+                nowTab = 1
+                setTab(nowTab)
+              }}>Option 2</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="link-2" onClick={()=>{
+                let nowTab = tab
+                nowTab = 2
+                setTab(nowTab)
+              }}>Option 3</Nav.Link>
+            </Nav.Item>
+          </Nav>
+  
+           <TabContent tab={tab}/>
+        </div>
+      </>
+    )
+  }
+  
+  export default Detail
+  ```
+
+  

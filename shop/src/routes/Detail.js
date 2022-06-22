@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
+import { Nav } from "react-bootstrap"
 import { useParams } from "react-router-dom"
-
+import TabContent from "../components/TabContent"
 function Detail(props) {
 
   let [onOff, setOnOff] = useState(false)
@@ -15,18 +16,20 @@ function Detail(props) {
     }
   }, [inputValue])
 
-  let [count, setCount] = useState(0)
+  // let [count, setCount] = useState(0)
   let { id } = useParams()
   let targetItem = props.shoes.find((shoe) => id === String(shoe.id))
+  let [tab, setTab] = useState(0)
+
   return (
     <>
       { onOff === true ? 
       <div className="alert alert-warning">
         2초 이내 구매시 할인
       </div> : null }
-      <button onClick={()=> {
+      {/* <button onClick={()=> {
         setCount(count+1 )
-      }}>클릭!</button> <p>{count}</p>
+      }}>클릭!</button> <p>{count}</p> */}
 
       <div className="container">
         <div className="row">
@@ -42,9 +45,36 @@ function Detail(props) {
             <button className="btn btn-danger">주문하기</button>
           </div>
         </div>
+
+        <Nav variant="tabs" defaultActiveKey="link-0">
+          <Nav.Item>
+            <Nav.Link eventKey="link-0" onClick={()=>{
+              let nowTab = tab
+              nowTab = 0
+              setTab(nowTab)
+            }}>Option 1</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="link-1" onClick={()=>{
+              let nowTab = tab
+              nowTab = 1
+              setTab(nowTab)
+            }}>Option 2</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="link-2" onClick={()=>{
+              let nowTab = tab
+              nowTab = 2
+              setTab(nowTab)
+            }}>Option 3</Nav.Link>
+          </Nav.Item>
+        </Nav>
+
+         <TabContent tab={tab}/>
       </div>
     </>
   )
 }
+
 
 export default Detail
