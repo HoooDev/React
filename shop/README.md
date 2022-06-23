@@ -473,3 +473,53 @@
       ```
 
       위와 같이 작성하면 모든 state들이 변수 a에 저장되게 되는데 만약 user라는 state만 가져오고 싶다면 `let a = useSelector((state)=> { return state.user })`와 같이 조작 해 주면 된다.
+    
+  - state를 수정하려면?
+  
+    ```js
+    //store.js
+    import { configureStore, createSlice, } from '@reduxjs/toolkit'
+    
+    //useState와 비슷한 원리
+    let user = createSlice({
+    	name: 'user',
+    	initialState: { name: 'Lee', age: 26 },
+    	reducers: {
+    		changeName(state) {
+    			state.name = 'LeeGunHoo'
+    		},
+    		plusAge(state) {
+    			state.age += 1
+    		}
+    	}
+    })
+    
+    // 함수들을 빼내는 작업 (reducers 안의 내용)
+    export let { changeName, plusAge } = user.actions
+    
+    중략..
+    ---------------------------------------------------------
+        
+    // Cart.js
+    import { useDispatch, useSelector } from 'react-redux'
+    import { changeName, plusAge } from '../store.js'
+    
+    function Cart() {
+        중략 ...
+    	let dispatch = useDispatch() // dispatch 사용
+    	return (
+    		<div>
+            	<td><button onClick={() => 
+        {
+            dispatch(changeName()) // dispatch(변경 함수)
+        }
+    	} >+</button></td>
+        중략 ...
+    
+    
+    ```
+  
+    1. reducers 안에 함수를 정의하고 `state명.actions` 안에 있는 함수를 export를 통해 다른 컴포넌트에서 사용하도록 한다.
+    2. 사용하고자 하는 컴포넌트에서 import를 해온 후 `let dispatch = useDispatch() `를 통해 dispatch*를 사용.
+       - dispatch : store로 수정 요청을 보내는 함수
+    3. `dispatch(changeName())`를 통해 state를 변경해준다.

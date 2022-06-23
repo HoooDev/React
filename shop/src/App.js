@@ -35,37 +35,37 @@ function App() {
             <Container>
               <Item shoes={shoes} ></Item>
             </Container>
-            { clickCnt < 3 ?
+            {clickCnt < 3 ?
               <button onClick={() => {
                 let newCnt = clickCnt
                 newCnt += 1
                 setClickCnt(newCnt)
-                if (clickCnt === 1){
-                axios.get('https://codingapple1.github.io/shop/data2.json')
-                  .then((data) => {
-                    let copyItem = [...shoes, ...data.data]
-                    setShoes(copyItem)
-                  })
-              } else if (clickCnt === 2) {
-                axios.get('https://codingapple1.github.io/shop/data3.json')
-                .then((data) => {
-                  let copyItem = [...shoes, ...data.data]
-                  setShoes(copyItem)
-                })
-              }
-            }}
+                if (clickCnt === 1) {
+                  axios.get('https://codingapple1.github.io/shop/data2.json')
+                    .then((data) => {
+                      let copyItem = [...shoes, ...data.data]
+                      setShoes(copyItem)
+                    })
+                } else if (clickCnt === 2) {
+                  axios.get('https://codingapple1.github.io/shop/data3.json')
+                    .then((data) => {
+                      let copyItem = [...shoes, ...data.data]
+                      setShoes(copyItem)
+                    })
+                }
+              }}
               >더보기</button>
-            : null}
+              : null}
           </>
         } />
-        <Route path='/detail/:id' element={<Detail shoes={shoes} />}/>
+        <Route path='/detail/:id' element={<Detail shoes={shoes} />} />
         <Route path='*' element={<div>없는 페이지</div>} />
         <Route path='/event' element={<Event />}>
           <Route path='one' element={<div>첫 주문시 양배추즙 서비스</div>}></Route>
           <Route path='two' element={<div>생일기념 쿠폰받기</div>}></Route>
         </Route>
 
-        <Route path='/cart' element={<Cart/>}>
+        <Route path='/cart' element={<Cart />}>
         </Route>
       </Routes>
     </div>
