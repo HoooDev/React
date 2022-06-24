@@ -540,5 +540,86 @@
     	}
     })
     ```
+  
+- **장바구니 추가, 삭제, 수량 변경**
+
+  - ```js
+    let cartItems = createSlice({
+    	name: 'cartItems',
+    	initialState: [
+    		{ id: 0, name: 'White and Black', count: 2 },
+    		{ id: 2, name: 'Grey Yordan', count: 1 }
+    	],
+    	reducers: {
+    		countUp(state, action) {
+    			let findId = state.findIndex((obj)=>{
+    				return obj.id === action.payload
+    			})
+    			state[findId].count++
+    		},
     
+    		countMinus(state, action) {
+    			let findId = state.findIndex((obj)=>{
+    				return obj.id === action.payload
+    			})
+    			if (state[findId].count === 1) {
+    				if (window.confirm('장바구니에서 삭제하시겠습니까?')) {
+    					alert('삭제 되었습니다.')
+    					state.splice(findId, 1)
+    				} else {
+    					alert('삭제가 취소되었습니다.')
+    				}
+    			} else {
+    				state[findId].count--
+    			}},
     
+    		pushItem(state, action) {
+    			console.log(current(state))
+    			let findIdx = state.findIndex((obj)=>{
+    				return obj.id === action.payload.id
+    			})
+    			console.log(findIdx)
+    			if (findIdx === -1) {
+    				state.push(action.payload)
+    			} else {
+    				state[findIdx].count += 1
+    			}
+    			// state[findIdx].id === action.payload.id ? state[findIdx].count += 1 : state.push(action.payload)
+    			// state.push(action.payload)
+    		},
+    
+    			deleteItem(state, action) {
+    				let findIdx = state.findIndex((idx)=>{
+    					return idx === action.payload.id
+    				})
+    				if (window.confirm('장바구니에서 삭제하시겠습니까?')) {
+    					alert('삭제 되었습니다.')
+    					state.splice(findIdx, 1)
+    				} else {
+    					alert('삭제가 취소되었습니다.')
+    				}
+    			}
+    	}
+    })
+    ```
+
+    - 이부분의 핵심은 dispatch로 해당 Item 객체 중 id 속성 값을 받아와서 state와 findIndex를 통하여 서로 같음을 먼저 체크 해 준다.
+  
+      - state를 console.log를 통해 보고싶다면?
+  
+        ```js
+        import { current } from '@reduxjs/toolkit'
+        
+        ...중략
+        
+        console.log(current(state))
+        ```
+  
+        위와 같은 방식으로 current를 redux toolkit에서 import해와서 사용한다. (디버깅에 유용)
+  
+    - Item을 장바구니에 추가 해 줄땐, 객체 형식을 action에 맞게 보내준다. (처음 넣게 될 시 count는 1로 시작하게 되므로 count : 1 을 객체에 추가해서 보내준다.)
+  
+    - .payload를 안적을 시 값이 제대로 넘어가지 않으므로 잊지말도록 하자!
+
+  - 
+

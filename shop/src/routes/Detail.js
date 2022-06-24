@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react"
 import { Nav } from "react-bootstrap"
+import { useDispatch } from 'react-redux'
 import { useParams } from "react-router-dom"
 import TabContent from "../components/TabContent"
+import { pushItem } from './../store.js'
+
 
  
 function Detail(props) {
 
+  let dispatch = useDispatch()
 
   let [onOff, setOnOff] = useState(false)
   useEffect(()=>{
@@ -46,7 +50,7 @@ function Detail(props) {
             <p>{targetItem.content}</p>
             <p>{targetItem.price}</p>
             <button className="btn btn-danger" onClick={()=>{
-              
+              dispatch(pushItem({id: targetItem.id, name: targetItem.title, count: 1}))
             }}>주문하기</button>
           </div>
         </div>
