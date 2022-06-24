@@ -1,12 +1,12 @@
 import { Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { changeName, plusAge } from '../store.js'
+import { plusAge } from '../store/userSlice.js'
+import { countUp } from './../store.js'
 
 function Cart() {
 
 	let cartItems = useSelector((state) => state.cartItems) // Redux store를 가져와 줌, 모든 state가 이 곳에 남아있다.
 	let userName = useSelector((state) => state.user)
-
 	let dispatch = useDispatch()
 
 	return (
@@ -25,11 +25,11 @@ function Cart() {
 				<tbody>
 					{cartItems.map((cartItem, idx) =>
 						<tr key={idx}>
-							<td>{idx + 1}</td>
+							<td>{cartItem.id}</td>
 							<td>{cartItem.name}</td>
 							<td>{cartItem.count}</td>
 							<td><button onClick={() => {
-								dispatch(changeName())
+								dispatch(countUp(idx))
 							}} >+</button></td>
 						</tr>
 					)}

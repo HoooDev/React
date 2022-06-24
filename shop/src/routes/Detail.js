@@ -45,7 +45,9 @@ function Detail(props) {
             <h4 className="pt-5">{targetItem.title}</h4>
             <p>{targetItem.content}</p>
             <p>{targetItem.price}</p>
-            <button className="btn btn-danger">주문하기</button>
+            <button className="btn btn-danger" onClick={()=>{
+              
+            }}>주문하기</button>
           </div>
         </div>
 

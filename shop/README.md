@@ -523,3 +523,22 @@
     2. 사용하고자 하는 컴포넌트에서 import를 해온 후 `let dispatch = useDispatch() `를 통해 dispatch*를 사용.
        - dispatch : store로 수정 요청을 보내는 함수
     3. `dispatch(changeName())`를 통해 state를 변경해준다.
+    
+  - parameter를 이용한 수정은?
+  
+    ```js
+    let user = createSlice({
+    	name: 'user',
+    	initialState: { name: 'Lee', age: 26 },
+    	reducers: {
+    		changeName(state) {
+    			state.name = 'LeeGunHoo'
+    		},
+    		plusAge(state, action) { // << 파라미터를 하나 줌 만약 a가 10이면 10씩 증가하는 함수 보통 작명은 action이라고 많이들 함
+    			state.age += action.payload // << 파라미터.paylod를 사용. 
+    		}
+    	}
+    })
+    ```
+    
+    
