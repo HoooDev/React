@@ -475,7 +475,7 @@
       위와 같이 작성하면 모든 state들이 변수 a에 저장되게 되는데 만약 user라는 state만 가져오고 싶다면 `let a = useSelector((state)=> { return state.user })`와 같이 조작 해 주면 된다.
     
   - state를 수정하려면?
-  
+
     ```js
     //store.js
     import { configureStore, createSlice, } from '@reduxjs/toolkit'
@@ -518,14 +518,14 @@
     
     
     ```
-  
+
     1. reducers 안에 함수를 정의하고 `state명.actions` 안에 있는 함수를 export를 통해 다른 컴포넌트에서 사용하도록 한다.
     2. 사용하고자 하는 컴포넌트에서 import를 해온 후 `let dispatch = useDispatch() `를 통해 dispatch*를 사용.
        - dispatch : store로 수정 요청을 보내는 함수
     3. `dispatch(changeName())`를 통해 state를 변경해준다.
     
   - parameter를 이용한 수정은?
-  
+
     ```js
     let user = createSlice({
     	name: 'user',
@@ -540,7 +540,7 @@
     	}
     })
     ```
-  
+
 - **장바구니 추가, 삭제, 수량 변경**
 
   - ```js
@@ -604,9 +604,9 @@
     ```
 
     - 이부분의 핵심은 dispatch로 해당 Item 객체 중 id 속성 값을 받아와서 state와 findIndex를 통하여 서로 같음을 먼저 체크 해 준다.
-  
+
       - state를 console.log를 통해 보고싶다면?
-  
+
         ```js
         import { current } from '@reduxjs/toolkit'
         
@@ -614,12 +614,113 @@
         
         console.log(current(state))
         ```
-  
+
         위와 같은 방식으로 current를 redux toolkit에서 import해와서 사용한다. (디버깅에 유용)
-  
+
     - Item을 장바구니에 추가 해 줄땐, 객체 형식을 action에 맞게 보내준다. (처음 넣게 될 시 count는 1로 시작하게 되므로 count : 1 을 객체에 추가해서 보내준다.)
-  
+
     - .payload를 안적을 시 값이 제대로 넘어가지 않으므로 잊지말도록 하자!
 
-  - 
+- Local Storage에 데이터 저장하기, 꺼내기
 
+  - 저장
+
+    - Local Storage는 문자만 저장이 가능하므로 json으로의 변환이 필요하다.
+    - localStorage는 기존 데이터를 수정은 불가능
+
+    ```js
+    let obj = {name : 'lee'}
+      localStorage.setItem('data', JSON.stringify(obj))
+    ```
+
+    - 변수를 `JSON.stringify([object])`를 통해 json화 시켜서 localstorage에 넣어준다.
+
+  - 꺼내기
+
+    - `localStorage.getItem([object])`를 통해 문자열로 변환 된 데이터를 뽑아올 수 있다.
+
+  - json -> array/object 변환하기
+
+    - JSON.parse()를 통해 변환 해줌.
+
+  - 그렇다면 변수들을 어떻게 LocalStorage에 저장하는가? (최근 본 상품들의 id를 저장하기)
+
+    - 우선 App.js에서 빈 배열을 useEffect로 먼저 선언해준다.
+
+      ```js
+        useEffect(()=>{
+          localStorage.setItem('watched', JSON.stringify([]))
+        }, [])
+      ```
+
+    - 중복제거, 내가 본 상품들을 localStorage에 저장
+
+      ```js
+        useEffect(()=>{
+          let getItemId = localStorage.getItem('watched')
+          getItemId = JSON.parse(getItemId)
+          getItemId.push(targetItem.id)
+          getItemId = new Set(getItemId)
+          getItemId = Array.from(getItemId)
+          localStorage.setItem('watched', JSON.stringify(getItemId))
+        })
+      ```
+
+      1. 먼저 빈 배열을 json -> array로 바꿔서 가져 온 다음 현재 item.id를 배열에 추가 해 준다.
+      2. 그 후 중복 제거를 위해 배열을 Set*을 통해 중복을 제거 해 주고 다시 array로 변환해 준다.
+         - array -> set : `new Set(array)`
+         - set -> array : `array from(Set)`
+      3. 다시 local storage에 array -> json 으로 변환하여 값을 넣어준다.
+
+- React-query
+
+  - axis 요청에 대한 기능들을 편하게 해주는 react library
+
+  - 장점
+
+    1. ajax 요청 성공/실패/로딩중 상태를 쉽게 파악할 수 있다.
+    2. 재요청을 자주 함으로써 실시간 데이터를 가져오는 데 유리하다 (실시간 sns, 코인거래소 등)
+    3. 요청 실패 시 알아서 재시도
+    4. ajax로 가져온 결과는 state공유 필요 없음
+       - 다른 컴포넌트에서 같은 axios요청 코드를 적어도 한번만 실행해주는 기능
+
+  - 사용법
+
+    ```js
+    import axios from 'axios';
+    import { useQuery } from 'react-query';
+    
+    
+    
+    function MyNavBar() {
+      // useQuery함수를 사용하여 데이터를 가져온 후, result변수에 담는다.
+      let result = useQuery('getData', ()=>{
+        return axios.get('https://codingapple1.github.io/userdata.json').then((a)=>{
+          return a.data
+        })
+      })
+    
+      return (
+        <Navbar bg="dark" variant="dark">
+          <Container className='nav justify-content-start'>
+            <Navbar.Brand href="#home">Shop</Navbar.Brand>
+            <Nav className="me-auto">
+              <Nav.Link onClick={()=>{ navigate('/') }}>Home</Nav.Link>
+              <Nav.Link onClick={()=>{ navigate('/cart') }} >Cart</Nav.Link>
+            </Nav>
+            <Nav className='ms-auto' style={{ color: 'white' }}>
+              {/* { result.isLoading ? '로딩중' : '반가워요 ' + result.data.name } */}
+    					// 각자 요청에 따라 해당 상태에 대해 기입해준다.
+              { result.isLoading && '로딩중' }
+              { result.error && 'Error!' }
+              { result.data && result.data.name }
+            </Nav>
+          </Container>
+        </Navbar>
+      )
+    }
+    ```
+
+    
+
+  

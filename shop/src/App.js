@@ -7,15 +7,23 @@ import Cart from './routes/Cart'
 import { Container } from 'react-bootstrap/';
 import { Routes, Route } from 'react-router-dom'
 import data from './data'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
 function App() {
 
+  // let obj = {name : 'lee'}
+  // localStorage.setItem('data', JSON.stringify(obj))
   let [shoes, setShoes] = useState(data)
   let [clickCnt, setClickCnt] = useState(1)
 
+  useEffect(()=>{
+    if (! localStorage.getItem('watched')) {
+      localStorage.setItem('watched', JSON.stringify([]))
+    }
+    
+  }, [])
 
   return (
     <div className="App">

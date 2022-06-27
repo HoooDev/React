@@ -1,4 +1,4 @@
-import { configureStore, createSlice, current } from '@reduxjs/toolkit'
+import { configureStore, createSlice } from '@reduxjs/toolkit'
 import user from './store/userSlice.js'
 
 //useState와 비슷한 원리, store폴더 안에 userSlice.js로 이동
@@ -24,6 +24,7 @@ import user from './store/userSlice.js'
 // 	name: 'stockCnt',
 // 	initialState: [0]
 // })
+
 
 let stock = createSlice({
 	name: 'stock',
@@ -60,15 +61,20 @@ let cartItems = createSlice({
 			}},
 
 		pushItem(state, action) {
-			console.log(current(state))
+
 			let findIdx = state.findIndex((obj)=>{
 				return obj.id === action.payload.id
 			})
-			console.log(findIdx)
 			if (findIdx === -1) {
-				state.push(action.payload)
+				if (window.confirm('장바구니에 추가 하시겠습니까?')) {
+					alert('추가 되었습니다.')
+					state.push(action.payload)
+				} 
 			} else {
-				state[findIdx].count += 1
+					if (window.confirm('이미 장바구니에 추가 된 상품입니다. 더 추가 하시겠습니까?')) {
+					alert('추가 되었습니다.')
+					state[findIdx].count += 1
+				} 
 			}
 			// state[findIdx].id === action.payload.id ? state[findIdx].count += 1 : state.push(action.payload)
 			// state.push(action.payload)

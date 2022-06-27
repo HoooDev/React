@@ -1,8 +1,12 @@
+// import {  useEffect } from 'react';
 import { Col, Row } from 'react-bootstrap/';
 // import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
 function Item(props) {
+  // let [itemId, setItemId] = useState([])
+
+
 
   let navigate = useNavigate()
   return (
@@ -13,7 +17,10 @@ function Item(props) {
         return (
           <Col xs={6} md={4} key={idx}>
             <div>
-              <img onClick={() => { navigate(goDetail) }} src={imgUrl} width='80%' alt='1' style={{ cursor: 'pointer' }} />
+              <img onClick={() => { 
+                navigate(goDetail);
+                
+                }} src={imgUrl} width='80%' alt='1' style={{ cursor: 'pointer' }} />
               <h4>{shoe.title}</h4>
               <p>{shoe.price}</p>
             </div>

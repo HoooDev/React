@@ -28,6 +28,16 @@ function Detail(props) {
   let targetItem = props.shoes.find((shoe) => id === String(shoe.id))
   let [tab, setTab] = useState(0)
 
+
+  useEffect(()=>{
+    let getItemId = localStorage.getItem('watched')
+    getItemId = JSON.parse(getItemId)
+    getItemId.push(targetItem.id)
+    getItemId = new Set(getItemId)
+    getItemId = Array.from(getItemId)
+    localStorage.setItem('watched', JSON.stringify(getItemId))
+  })
+
   return (
     <>
       { onOff === true ? 
