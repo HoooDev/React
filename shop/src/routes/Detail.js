@@ -6,19 +6,18 @@ import TabContent from "../components/TabContent"
 import { pushItem } from './../store.js'
 
 
- 
 function Detail(props) {
 
   let dispatch = useDispatch()
 
   let [onOff, setOnOff] = useState(false)
-  useEffect(()=>{
-    setTimeout(()=> { setOnOff(false) }, 2000 )
+  useEffect(() => {
+    setTimeout(() => { setOnOff(false) }, 2000)
   }, [])
 
   let [inputValue, setInputValue] = useState('')
-  useEffect(()=>{
-    if(isNaN(inputValue) === true){
+  useEffect(() => {
+    if (isNaN(inputValue) === true) {
       alert('ㄴㄴ')
     }
   }, [inputValue])
@@ -29,7 +28,7 @@ function Detail(props) {
   let [tab, setTab] = useState(0)
 
 
-  useEffect(()=>{
+  useEffect(() => {
     let getItemId = localStorage.getItem('watched')
     getItemId = JSON.parse(getItemId)
     getItemId.push(targetItem.id)
@@ -40,10 +39,10 @@ function Detail(props) {
 
   return (
     <>
-      { onOff === true ? 
-      <div className="alert alert-warning">
-        2초 이내 구매시 할인
-      </div> : null }
+      {onOff === true ?
+        <div className="alert alert-warning">
+          2초 이내 구매시 할인
+        </div> : null}
       {/* <button onClick={()=> {
         setCount(count+1 )
       }}>클릭!</button> <p>{count}</p> */}
@@ -55,33 +54,33 @@ function Detail(props) {
           </div>
 
           <div className="col-md-6">
-          <input onChange={(e)=>{setInputValue(e.target.value)}}></input>
+            <input onChange={(e) => { setInputValue(e.target.value) }}></input>
             <h4 className="pt-5">{targetItem.title}</h4>
             <p>{targetItem.content}</p>
             <p>{targetItem.price}</p>
-            <button className="btn btn-danger" onClick={()=>{
-              dispatch(pushItem({id: targetItem.id, name: targetItem.title, count: 1}))
+            <button className="btn btn-danger" onClick={() => {
+              dispatch(pushItem({ id: targetItem.id, name: targetItem.title, count: 1 }))
             }}>주문하기</button>
           </div>
         </div>
 
         <Nav variant="tabs" defaultActiveKey="link-0">
           <Nav.Item>
-            <Nav.Link eventKey="link-0" onClick={()=>{
+            <Nav.Link eventKey="link-0" onClick={() => {
               let nowTab = tab
               nowTab = 0
               setTab(nowTab)
             }}>Option 1</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="link-1" onClick={()=>{
+            <Nav.Link eventKey="link-1" onClick={() => {
               let nowTab = tab
               nowTab = 1
               setTab(nowTab)
             }}>Option 2</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="link-2" onClick={()=>{
+            <Nav.Link eventKey="link-2" onClick={() => {
               let nowTab = tab
               nowTab = 2
               setTab(nowTab)
@@ -89,7 +88,7 @@ function Detail(props) {
           </Nav.Item>
         </Nav>
 
-         <TabContent tab={tab} shoes={props.shoes}/>
+        <TabContent tab={tab} shoes={props.shoes} />
       </div>
     </>
   )

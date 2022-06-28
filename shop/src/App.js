@@ -18,11 +18,11 @@ function App() {
   let [shoes, setShoes] = useState(data)
   let [clickCnt, setClickCnt] = useState(1)
 
-  useEffect(()=>{
-    if (! localStorage.getItem('watched')) {
+  useEffect(() => {
+    if (!localStorage.getItem('watched')) {
       localStorage.setItem('watched', JSON.stringify([]))
     }
-    
+
   }, [])
 
   return (

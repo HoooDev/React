@@ -721,6 +721,71 @@
     }
     ```
 
-    
+- **lazy import**
 
+  - React의 특징 상 SPA(Single Page Applications)를 사용하게 되면서 파일의 사이즈가 큰 단점이 있고 첫 페이지 로딩속도가 느릴 수 있다.
+
+  - 그러한 단점을 보안하고자 lazy 함수를 import 해오면서 필요에 의해서만 import를 해올 수 있는 장점이 있다.
+
+  - 사용법
+
+    1. `import Detail from './routes/Detail.js'`라는 컴포넌트를 import를 lazy를 통해 import 해오고 싶다면
+
+    2. ```js
+       import {lazy, Suspense, useEffect, useState} from 'react'
+       
+       const Detail = lazy( () => import('./routes/Detail.js') )
+       ```
+
+       와 같이 laze를 react에서 먼저 import해온 후 lazy를 사용할 수 있다.
+
+    3. 이렇게 한다면  Detail 컴포넌트 내용을 다른 js 파일로 쪼개준다.
+
+- **memo, useMemo**
+
+  - **memo**
+
+    ```js
+    import {memo, useState} from 'react'
+    
+    let Child = memo( function(){
+      return <div>자식</div>
+    })
+    
+    function Cart(){ 
+    
+      let [count, setCount] = useState(0)
+    
+      return (
+        <Child />
+        <button onClick={()=>{ setCount(count+1) }}> + </button>
+      )
+    }
+    ```
+
+    1. memo를 import 하고, 원하는 컴포넌트 정의 부분을 감싼다. (단, let 컴포넌트명 = function(){} 와 같은 방식으로 만들어야 감쌀 수 있음)
+    2. 그렇다면 Child로 전송되는 **props가 변하는 경우에만 재 렌더링**이 됨.
+    3. 하지만 **기존 props와 바뀐 props를 비교하는 연산이 추가로 진행**되므로 props가 크다면 오히려 불리한 경우가 생기므로 **필요한 곳에만 사용을 권장**
+
+  - **useMemo**
   
+    ```js
+    import {useMemo, useState} from 'react'
+    
+    function memoFunction(){
+      return 반복문10억번돌린결과
+    }
+    
+    function Cart(){ 
+    
+      let result = useMemo(()=>{ return memoFunction() }, [])
+    
+      return (
+        <Child />
+        <button onClick={()=>{ setCount(count+1) }}> + </button>
+      )
+    }
+    ```
+  
+    1. 비슷하게 생긴 useMemo 문법은 useEffect와 비슷한 용도.(Hook)
+    2. 컴포넌트 로드 시 1회만 실행하고 싶은 코드가 있으면 담으면 됨.
